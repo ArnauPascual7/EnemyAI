@@ -9,6 +9,7 @@ public class TargetDetectionBehaviour : MonoBehaviour
     [SerializeField] private LayerMask _ignoreLayers;
 
     public Vector3 TargetPosition => _target.transform.position;
+    public LayerMask IgnoreLayers => _ignoreLayers;
 
     private void Awake()
     {

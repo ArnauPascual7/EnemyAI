@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputs), typeof(CharacterController))]
@@ -14,9 +15,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _lookSense = .1f;
     [SerializeField] private float _lookLimitV = 89f;
 
+    public static event Action OnAttack;
+    public static event Action OnRespawn;
+
     private Vector2 MoveInput => _playerInputs.MoveInput;
     private Vector2 LookInput => _playerInputs.LookInput;
     private bool SprintInput => _playerInputs.SprintInput;
+    private bool AttackInput => _playerInputs.AttackInput;
+    private bool RespawnInput => _playerInputs.RespawnInput;
 
     private PlayerInputs _playerInputs;
     private CharacterController _characterController;
@@ -45,6 +51,9 @@ public class PlayerController : MonoBehaviour
         hMovement = transform.rotation * hMovement;
 
         _characterController.Move(hMovement * Time.deltaTime);
+
+        if (AttackInput) OnAttack?.Invoke();
+        if (RespawnInput) OnRespawn?.Invoke();
     }
 
     private void LateUpdate()

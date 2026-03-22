@@ -8,6 +8,8 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool SprintInput { get; private set; }
+    public bool AttackInput { get; private set; }
+    public bool RespawnInput { get; private set; }
 
     private void OnEnable()
     {
@@ -20,6 +22,12 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         InputActions.Player.Disable();
         InputActions.Player.RemoveCallbacks(this);
+    }
+
+    private void LateUpdate()
+    {
+        AttackInput = false;
+        RespawnInput = false;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -35,5 +43,15 @@ public class PlayerInputs : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void OnSprint(InputAction.CallbackContext context)
     {
         SprintInput = context.ReadValueAsButton();
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed) AttackInput = true;
+    }
+
+    public void OnRespawn(InputAction.CallbackContext context)
+    {
+        if (context.performed) RespawnInput = true;
     }
 }
